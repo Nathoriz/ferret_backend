@@ -33,6 +33,17 @@ public class UsuarioService {
         repository.save(usuario);
     }
 
+    public ResponseEntity<?> getUsuario(Long id){
+        Optional<Usuario> user = repository.findById(id);
+
+        Usuario useremail = repository.findByEmail(user.get().getEmail());
+        UsuarioInfo info = MHelpers.modelMapper().map(useremail,UsuarioInfo.class);
+        Map<String,Object> resp = new HashMap<>();
+        resp.put("Mensaje","Valido");
+//        resp.put("Usuario", info);
+        return new ResponseEntity<>(resp, HttpStatus.OK);
+    }
+
     @Transactional
     public void updateUsuario(Long usuarioId, String name, String apellido, String dirección){
         Usuario usuario = repository.findById(usuarioId)
@@ -90,7 +101,7 @@ public class UsuarioService {
             if(repository.existsByEmail(email)) throw new BadRequest("La contraseña es incorrecta");
             if(repository.existsByContrasenia(contrasenia)) throw new BadRequest("El email es incorrecto");
             if(!repository.existsByEmail(email) && !repository.existsByContrasenia(contrasenia)) {
-                resp.put("Mensaje","El email y la contraseña ingresados son incorrectos");
+                resp.put("Mensaje","Al parecer no se encuentra registrado");
             }
             return new ResponseEntity<>(resp,HttpStatus.UNAUTHORIZED);
         }

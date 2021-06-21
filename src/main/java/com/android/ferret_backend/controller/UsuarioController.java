@@ -3,6 +3,7 @@ package com.android.ferret_backend.controller;
 import com.android.ferret_backend.entity.Usuario;
 import com.android.ferret_backend.service.UsuarioService;
 import com.android.ferret_backend.utils.dto.Login;
+import com.android.ferret_backend.utils.dto.UsuarioInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,10 @@ public class UsuarioController {
     @GetMapping("/listar")
     public List<Usuario> listarUsuarios(){ return service.getUsuarios();}
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> ObtnerUsuario(@PathVariable("id") Long id){ return service.getUsuario(id);}
+
+
     @PostMapping("/crearCuenta")
     public void crearCuentaDeUsuario(@RequestBody Usuario usuario){ service.addUsuario(usuario);}
 
@@ -29,7 +34,7 @@ public class UsuarioController {
         service.updateUsuario(id,nombre,appellido,direccion);
     }
 
-    @PutMapping("/{id}/password")
+    @PutMapping("/password/{id}")
     public void cambiarContrasenia(@PathVariable("id") Long id, @RequestParam String contrasenia){
         service.updatePassword(id,contrasenia);
     }
