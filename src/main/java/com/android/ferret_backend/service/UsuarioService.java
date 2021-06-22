@@ -40,7 +40,7 @@ public class UsuarioService {
         UsuarioInfo info = MHelpers.modelMapper().map(useremail,UsuarioInfo.class);
         Map<String,Object> resp = new HashMap<>();
         resp.put("Mensaje","Valido");
-//        resp.put("Usuario", info);
+        resp.put("Usuario", info);
         return new ResponseEntity<>(resp, HttpStatus.OK);
     }
 
